@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -95,7 +96,7 @@
         <main class="p-4">
             
             <!-- ==================== 1. 每日行程表分頁 ==================== -->
-<div v-if="currentTab === 'itinerary'">
+            <div v-if="currentTab === 'itinerary'">
                 
                 <!-- 天氣資訊（顯示在第一個行程上方，自動抓當地氣溫與體感） -->
                 <div class="bg-gradient-to-r from-orange-50 to-emerald-50/60 rounded-2xl p-3 mb-4 border border-orange-100 flex items-center justify-between shadow-xs">
@@ -172,15 +173,8 @@
 
                                 <!-- 卡片內文欄位 -->
                                 <div class="flex-1 min-w-0">
-                                    <!-- 調整：將時間與標題並排 -->
                                     <div class="flex items-start justify-between gap-1">
-                                        <div class="flex items-center gap-2 min-w-0">
-                                            <!-- 🔔 新增的抵達時間顯示標籤 -->
-                                            <span v-if="item.arrivalTime" class="bg-orange-50 text-[#FFB07C] border border-orange-100 px-1.5 py-0.5 rounded-md font-extrabold text-[11px] flex-shrink-0">
-                                                ⏰ {{ item.arrivalTime }}
-                                            </span>
-                                            <h3 class="font-bold text-slate-800 text-base truncate">{{ item.title }}</h3>
-                                        </div>
+                                        <h3 class="font-bold text-slate-800 text-base truncate">{{ item.title }}</h3>
                                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-md flex-shrink-0" :class="getCategoryBadgeColor(item.category)">
                                             {{ item.category }}
                                         </span>
@@ -190,7 +184,7 @@
                                         <!-- 適用於景點、住宿、美食、購物 -->
                                         <div v-if="item.hours && ['景點','住宿','美食','購物'].includes(item.category)" class="flex items-center gap-1">
                                             <i class="fa-regular fa-clock text-[10px] text-slate-400"></i>
-                                            <span class="truncate">營業時間：{{ item.hours }}</span>
+                                            <span class="truncate">時間：{{ item.hours }}</span>
                                         </div>
                                         <!-- 僅適用於景點 -->
                                         <div v-if="item.ticket && item.category === '景點'" class="flex items-center gap-1 text-amber-700 font-medium">
