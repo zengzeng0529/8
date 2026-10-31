@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> MUMU NOTE | 美睫記帳與進階報表CRM系統</title>
+    <title> MUMU NOTE | 美睫記帳、報價與進階報表CRM系統</title>
     <style>
         /* --- 韓系奶油風 變數設定 --- */
         :root {
@@ -19,6 +19,8 @@
             --expense-red: #E07A5F;
             --birthday-pink: #E6B8A2;
             --highlight-orange: #D87A60; /* 備註專用顯眼色 */
+            --primary-color: #d4a373;   /* 報價單專用主色 */
+            --price-accent: #bc6c25;    /* 報價金額顏色 */
         }
 
         /* --- 全局樣式 --- */
@@ -113,15 +115,16 @@
             align-items: center;
             z-index: 1000;
             padding: 0 5px;
+            overflow-x: auto;
         }
 
         .nav-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            padding: 6px 10px;
+            padding: 6px 8px;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -521,7 +524,6 @@
         .customer-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--accent-latte); padding-bottom: 6px; margin-bottom: 8px; }
         .customer-name { font-weight: bold; font-size: 15px; }
         
-        /* 頂部資產與消費總金額包裝欄 */
         .customer-header-right {
             text-align: right;
             display: flex;
@@ -531,7 +533,6 @@
         .customer-deposit { font-size: 12px; color: #1A73E8; font-weight: 600; }
         .customer-total-spent { font-size: 12px; color: var(--income-green); font-weight: 600; }
         
-        /* 備註突顯樣式區塊碼 */
         .customer-note-highlight {
             font-size: 13px;
             color: var(--highlight-orange) !important;
@@ -558,7 +559,6 @@
         }
         .edit-crm-title { font-size: 11px; font-weight: bold; color: var(--text-muted); margin-bottom: 6px; }
         
-        /* 底部按鈕群組 */
         .crm-action-row {
             display: flex;
             justify-content: space-between;
@@ -575,20 +575,87 @@
         }
         .no-data { text-align: center; color: var(--text-muted); font-size: 14px; padding: 20px 0; }
 
-        /* ==================== 頁面 5: 報價 ==================== */
-        .top-toolbar .nav-btn { padding: 6px 7px; font-size: 12px; }
-        .q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .q-opt {
-            border: 1.5px solid var(--accent-latte); background: var(--bg-cream); border-radius: 12px;
-            padding: 10px; text-align: left; cursor: pointer; color: var(--text-dark); font-size: 14px;
+        /* ==================== 頁面 5: 互動式報價單樣式 ==================== */
+        .quote-subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
         }
-        .q-opt b { display: block; font-weight: 600; }
-        .q-opt i { font-style: normal; font-size: 12px; color: var(--text-muted); }
-        .q-opt.on { background: var(--main-butter); border-color: var(--text-muted); }
-        .q-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; }
-        .q-row .input-style { width: 110px; text-align: right; }
-        .q-line { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; }
-        .quick-tag.on { background: var(--text-dark); color: #fff; }
+        .quote-section-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 8px;
+            color: var(--text-dark);
+        }
+        .quote-option-group {
+            margin-bottom: 20px;
+        }
+        .quote-option-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid var(--accent-latte);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--pure-white);
+        }
+        .quote-option-item:hover {
+            border-color: var(--primary-color);
+            background-color: #fff9f5;
+        }
+        .quote-option-item input {
+            accent-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+        .quote-option-label {
+            flex-grow: 1;
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        .quote-option-price {
+            font-weight: bold;
+            color: var(--price-accent);
+        }
+        .quote-total-section {
+            background-color: var(--main-butter);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 25px;
+            border: 1px solid var(--accent-latte);
+        }
+        .quote-total-price {
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--price-accent);
+            margin-top: 5px;
+        }
+        .btn-quote-booking {
+            display: block;
+            width: 100%;
+            background-color: var(--text-dark);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        .btn-quote-booking:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -613,7 +680,7 @@
             <button class="nav-btn" onclick="switchPage('all-records-page', this)">2. 總紀錄</button>
             <button class="nav-btn" onclick="switchPage('reports-page', this)">3. 報表</button>
             <button class="nav-btn" onclick="switchPage('customers-page', this)">4. 客戶資料</button>
-            <button class="nav-btn" onclick="switchPage('quote-page', this)">5. 報價</button>
+            <button class="nav-btn" onclick="switchPage('quote-page', this)">5. 報價單</button>
         </nav>
 
         <header class="shop-header">
@@ -765,23 +832,63 @@
             </div>
         </main>
 
+        <!-- 💡 頁面 5: 美睫互動式價目與報價單 -->
         <main id="quote-page" class="page">
-            <div id="q-cards"></div>
             <div class="card-box">
-                <div class="card-title"><span>費用計算</span><span id="q-edit" style="font-size:13px;color:var(--text-muted);cursor:pointer">⚙️ 編輯價目</span></div>
-                <div class="q-row"><span>預收定金</span><input id="q-dep" class="input-style" type="number" inputmode="numeric" placeholder="0"></div>
-                <div class="q-row"><span>服務費</span><span id="q-fee" class="quick-tag">＋10% 服務費</span></div>
-                <div class="q-row"><span>優惠活動</span><span style="display:flex;gap:6px;align-items:center"><input id="q-dis" class="input-style" style="width:80px" type="number" inputmode="numeric" placeholder="0"><span id="q-cash" class="quick-tag on">元</span><span id="q-pct" class="quick-tag">%</span></span></div>
-                <div id="q-note" style="font-size:12px;color:var(--text-muted)">目前為折抵現金</div>
-            </div>
-            <div class="card-box" style="text-align:center">
-                <div style="font-size:12px;color:var(--text-muted)">應付尾款</div>
-                <div id="q-bal" style="font-size:30px;font-weight:700;margin:4px 0 12px">$0</div>
-                <div class="modal-footer" style="margin-top:0;flex-wrap:wrap">
-                    <button class="btn-modal cancel" id="q-reset">↺ 重置</button>
-                    <button class="btn-modal cancel" id="q-copy">📋 複製</button>
-                    <button class="btn-modal save" id="q-view">👁️ 明細</button>
-                    <button class="btn-modal save" id="q-post" style="flex:1 1 100%;background:var(--highlight-orange)">📒 轉入記帳</button>
+                <div class="card-title" style="justify-content: center; font-size: 20px;">✨ MUMU 質感美睫價目預算試算 ✨</div>
+                <div class="quote-subtitle">請選擇您想要的嫁接款式與附加服務</div>
+
+                <!-- 1. 款式選擇 -->
+                <div class="quote-option-group">
+                    <div class="quote-section-title">1. 選擇嫁接款式</div>
+                    
+                    <label class="quote-option-item">
+                        <input type="radio" name="quote-style" value="1000" data-name="自然裸妝感 (根數適中)" checked onchange="calculateQuoteTotal()">
+                        <span class="quote-option-label">自然裸妝感 (根數適中)</span>
+                        <span class="quote-option-price">$1,000</span>
+                    </label>
+
+                    <label class="quote-option-item">
+                        <input type="radio" name="quote-style" value="1300" data-name="濃密根根分明 (電眼款)" onchange="calculateQuoteTotal()">
+                        <span class="quote-option-label">濃密根根分明 (電眼款)</span>
+                        <span class="quote-option-price">$1,300</span>
+                    </label>
+
+                    <label class="quote-option-item">
+                        <input type="radio" name="quote-style" value="1600" data-name="仙女網紅款 (蓬鬆羽毛)" onchange="calculateQuoteTotal()">
+                        <span class="quote-option-label">仙女網紅款 (蓬鬆羽毛)</span>
+                        <span class="quote-option-price">$1,600</span>
+                    </label>
+                </div>
+
+                <!-- 2. 附加服務 -->
+                <div class="quote-option-group">
+                    <div class="quote-section-title">2. 附加服務（可複選）</div>
+                    
+                    <label class="quote-option-item">
+                        <input type="checkbox" name="quote-addon" value="200" data-name="外店卸甲" onchange="calculateQuoteTotal()">
+                        <span class="quote-option-label">外店卸甲</span>
+                        <span class="quote-option-price">+$200</span>
+                    </label>
+
+                    <label class="quote-option-item">
+                        <input type="checkbox" name="quote-addon" value="300" data-name="下睫毛嫁接" onchange="calculateQuoteTotal()">
+                        <span class="quote-option-label">下睫毛嫁接</span>
+                        <span class="quote-option-price">+$300</span>
+                    </label>
+
+                    <label class="quote-option-item">
+                        <input type="checkbox" name="quote-addon" value="150" data-name="精美睫毛梳保養組" onchange="calculateQuoteTotal()">
+                        <span class="quote-option-label">精美睫毛梳保養組</span>
+                        <span class="quote-option-price">+$150</span>
+                    </label>
+                </div>
+
+                <!-- 總金額與預約 -->
+                <div class="quote-total-section">
+                    <div style="font-size: 13px; color: var(--text-muted);">預估總金額</div>
+                    <div class="quote-total-price" id="quoteTotalAmount">$1000</div>
+                    <a href="https://line.me/R/" target="_blank" class="btn-quote-booking" id="lineBookingBtn">立即加 Line 預約諮詢</a>
                 </div>
             </div>
         </main>
@@ -838,30 +945,11 @@
         </div>
     </div>
 
-    <div id="q-modal" class="modal-overlay">
-        <div class="modal-box" style="max-height:88vh;overflow:auto">
-            <div class="modal-header"><span>報價單</span><span id="q-close" style="cursor:pointer;font-weight:normal;font-size:14px">✕</span></div>
-            <div id="q-body"></div>
-            <div class="modal-footer"><button class="btn-modal cancel" id="q-copy2">📋 複製文字</button><button class="btn-modal save" id="q-close2">關閉</button></div>
-        </div>
-    </div>
-
-    <div id="q-admin" class="modal-overlay">
-        <div class="modal-box" style="max-height:88vh;overflow:auto">
-            <div class="modal-header"><span>⚙️ 編輯價目</span></div>
-            <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">每行一個項目，格式「名稱,價格」。小卡名稱留空即刪除。</p>
-            <div id="q-admin-body"></div>
-            <button class="btn-submit" id="q-addcard" style="background:var(--main-butter);color:var(--text-dark)">＋ 新增小卡</button>
-            <div class="modal-footer"><button class="btn-modal cancel" id="q-acancel">取消</button><button class="btn-modal save" id="q-asave">儲存變更</button></div>
-        </div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ⚠️ Firebase 後台申請的配置資訊（已修正完畢）
         const firebaseConfig = {
             apiKey: "AIzaSyBskoljPhASGXHB2oPqMFHjr2X4NajGVXk",
             authDomain: "studio-6429e.firebaseapp.com",
@@ -872,12 +960,10 @@
             measurementId: "G-LR1MP5QJJ9"
         };
 
-        // 初始化 Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // 全域變數
         let currentUser = null;
         let records = [];
         let customerCRM = {};
@@ -885,9 +971,7 @@
         const todayStr = formatDateString(new Date());
         let selectedDateStr = todayStr;
         let currentReportDetailFilter = '';
-        let quoteCards = null; // 報價價目（存於 Firebase）
 
-        // 監聽登入狀態切換
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -895,30 +979,16 @@
                 document.getElementById('auth-page').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
                 
-        // 1. 先嘗試從雲端載入資料
-        await loadCloudData(); 
+                await loadCloudData(); 
 
-        // 2. 判斷雲端載入後，你的資料變數（假設叫 customerCRM 或 records）是否為空
-        //    (請根據你專案實際儲存資料的變數名稱調整，這裡以 customerCRM 為例)
-        if (!customerCRM || Object.keys(customerCRM).length === 0) {
-            console.log('雲端無資料，嘗試從本地 LocalStorage 搬家...');
-            
-            // 讀取舊的本地資料（請替換成你以前在 LocalStorage 使用的 Key 名稱）
-            const localData = localStorage.getItem('mumu_studio_local_data'); 
-            
-            if (localData) {
-                customerCRM = JSON.parse(localData);
+                if (!customerCRM || Object.keys(customerCRM).length === 0) {
+                    const localData = localStorage.getItem('mumu_studio_local_data'); 
+                    if (localData) {
+                        customerCRM = JSON.parse(localData);
+                        await saveCloudData(); 
+                    }
+                }
                 
-                // 3. 搬家成功後，立刻調用你的雲端同步函數，把資料推上 Firebase
-                await saveCloudData(); 
-                console.log('本地資料已成功同步至雲端！');
-            }
-        }
-                
-                // 報價價目初始化（雲端優先）
-                if (window.quoteInit) window.quoteInit(quoteCards);
-
-                // 網頁元件初始化
                 buildYearDropdowns();
                 buildMonthDropdown();
                 initCalendar();
@@ -926,6 +996,7 @@
                 handleTypeChange();
                 renderReports();
                 renderCustomerPage();
+                calculateQuoteTotal();
             } else {
                 currentUser = null;
                 document.getElementById('auth-page').style.display = 'block';
@@ -933,7 +1004,6 @@
             }
         });
 
-        // 註冊帳號
         window.handleRegister = async function() {
             const email = document.getElementById('auth-email').value.trim();
             const password = document.getElementById('auth-password').value;
@@ -942,17 +1012,11 @@
                 await createUserWithEmailAndPassword(auth, email, password);
                 alert('帳號註冊成功並已自動登入！');
             } catch (error) {
-                if (error.code === 'auth/email-already-in-use') {
-                    alert('此電子郵件已被註冊，請直接點選登入。');
-                } else if (error.code === 'auth/weak-password') {
-                    alert('密碼強度不足，請至少輸入 6 位數。');
-                } else {
-                    alert('註冊失敗：' + error.message);
-                }
+                if (error.code === 'auth/email-already-in-use') alert('此電子郵件已被註冊。');
+                else alert('註冊失敗：' + error.message);
             }
         }
 
-        // 登入系統
         window.handleLogin = async function() {
             const email = document.getElementById('auth-email').value.trim();
             const password = document.getElementById('auth-password').value;
@@ -960,41 +1024,27 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
-                if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                    alert('電子郵件或密碼錯誤。');
-                } else {
-                    alert('登入失敗：' + error.message);
-                }
+                alert('電子郵件或密碼錯誤。');
             }
         }
 
-        // 登出系統
         window.handleLogout = function() {
-            if(confirm('確定要登出系統嗎？')) {
-                signOut(auth);
-            }
+            if(confirm('確定要登出系統嗎？')) signOut(auth);
         }
 
-        // 從 Firebase 雲端讀取資料（💡方案 A：核心自動移轉與讀取機制）
         async function loadCloudData() {
             if (!currentUser) return;
             try {
                 const userDocRef = doc(db, "users", currentUser.uid);
                 const docSnap = await getDoc(userDocRef);
-                
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     records = data.records || [];
                     customerCRM = data.customerCRM || {};
-                    quoteCards = data.quoteCards || null;
                 } else {
-                    // 💡 如果雲端目前沒資料，代表此帳號第一次使用，啟動 LocalStorage 舊資料搬家救援機制
-                    console.log("偵測到雲端無資料，正在嘗試從本機 LocalStorage 轉移舊客戶資產資料...");
                     const oldData = loadSavedLocalData();
                     records = oldData.records;
                     customerCRM = oldData.crm;
-                    
-                    // 搬家完畢後，立刻同步並備份到雲端，防止資料消失
                     await saveCloudData();
                 }
             } catch (e) {
@@ -1002,12 +1052,10 @@
             }
         }
 
-        // 本地舊資料救援讀取（向下相容，精準抓取各版本舊資料）
         function loadSavedLocalData() {
             const recordKeys = ['mumu_records_v4', 'mumu_records_v3', 'mumu_records_v2', 'mumu_records'];
-            const crmKeys = ['mumu_crm_v4', 'mumu_crm_v3', 'mumu_crm_v2', 'mumu_crm', 'customerCRM']; // 加入你原本常用的 customerCRM 欄位
+            const crmKeys = ['mumu_crm_v4', 'mumu_crm_v3', 'mumu_crm_v2', 'mumu_crm', 'customerCRM'];
             let loadedRecords = null, loadedCRM = null;
-            
             for (let key of recordKeys) {
                 let data = localStorage.getItem(key);
                 if (data) { try { loadedRecords = JSON.parse(data); break; } catch(e){} }
@@ -1019,7 +1067,6 @@
             return { records: loadedRecords || [], crm: loadedCRM || {} };
         }
 
-        // 同步資料回 Firebase 雲端
         async function saveCloudData() {
             if (!currentUser) return;
             try {
@@ -1027,7 +1074,6 @@
                 await setDoc(userDocRef, {
                     records: records,
                     customerCRM: customerCRM,
-                    quoteCards: quoteCards,
                     lastUpdated: new Date().toISOString()
                 }, { merge: true });
             } catch (e) {
@@ -1035,24 +1081,6 @@
             }
         }
 
-        // ==================== 報價分頁橋接 ====================
-        window.saveQuoteCards = async function(c) {
-            quoteCards = c;
-            await saveCloudData();
-        }
-        window.fillRecordForm = function(d) {
-            window.switchPage('calendar-page', document.querySelector('.top-toolbar .nav-btn'));
-            document.getElementById('add-type').value = '收入';
-            window.handleTypeChange();
-            document.getElementById('add-project').value = d.project || '';
-            document.getElementById('add-amount').value = d.amount || '';
-            document.getElementById('add-note').value = d.note || '';
-            const nameEl = document.getElementById('add-cust-name');
-            nameEl.scrollIntoView({ block: 'center' });
-            nameEl.focus();
-        }
-
-        // ==================== 記帳與 CRM 核心渲染邏輯 ====================
         function formatDateString(dateObj) {
             return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
         }
@@ -1064,6 +1092,7 @@
             if (val === undefined || val === null || val === '') return '未記錄';
             return type === '課堂數' ? `${val} 堂` : `$${val}`;
         }
+
         window.handleTypeChange = function() {
             const type = document.getElementById('add-type').value;
             const custWrapper = document.getElementById('cust-name-wrapper');
@@ -1075,9 +1104,11 @@
                 document.getElementById('add-cust-name').value = ''; document.getElementById('add-deposit').value = '';
             }
         }
+
         window.quickSelectProject = function(projectName) {
             document.getElementById('add-project').value = projectName;
         }
+
         function buildYearDropdowns() {
             const currentYear = new Date().getFullYear();
             const calYearSelect = document.getElementById('select-cal-year');
@@ -1091,6 +1122,7 @@
                 reportYearSelect.value = currentYear;
             }
         }
+
         function buildMonthDropdown() {
             const calMonthSelect = document.getElementById('select-cal-month');
             if (calMonthSelect) {
@@ -1100,6 +1132,7 @@
                 }
             }
         }
+
         window.switchPage = function(pageId, btnElement) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
@@ -1109,7 +1142,9 @@
             if (pageId === 'reports-page') { closeReportDetail(); renderReports(); }
             if (pageId === 'calendar-page') { initCalendar(); renderDayRecords(); }
             if (pageId === 'customers-page') renderCustomerPage();
+            if (pageId === 'quote-page') calculateQuoteTotal();
         }
+
         window.openEditModal = function(id, event) {
             if(event) event.stopPropagation();
             const rec = records.find(r => r.id === id);
@@ -1131,9 +1166,11 @@
             }
             document.getElementById('edit-modal').style.display = 'flex';
         }
+
         window.closeEditModal = function(event) {
             document.getElementById('edit-modal').style.display = 'none';
         }
+
         window.updateRecordData = async function() {
             const id = document.getElementById('edit-id').value;
             const recIndex = records.findIndex(r => r.id === id);
@@ -1161,8 +1198,8 @@
             await saveCloudData();
             closeEditModal();
             initCalendar(); renderDayRecords(); renderReports(); renderCustomerPage();
-            if(document.getElementById('all-records-page').classList.contains('active')) renderAllRecords();
         }
+
         function initCalendar() {
             const year = currentDate.getFullYear(); const month = currentDate.getMonth();
             const calYearSel = document.getElementById('select-cal-year');
@@ -1192,14 +1229,17 @@
                 daysContainer.appendChild(dayCell);
             }
         }
+
         window.selectCalendarDate = function() {
             currentDate.setFullYear(parseInt(document.getElementById('select-cal-year').value));
             currentDate.setMonth(parseInt(document.getElementById('select-cal-month').value));
             initCalendar();
         }
+
         window.changeMonth = function(direction) {
             currentDate.setMonth(currentDate.getMonth() + direction); initCalendar();
         }
+
         function renderDayRecords() {
             const labelEl = document.getElementById('selected-date-label'); if(!labelEl) return;
             const dateParts = selectedDateStr.split('-'); labelEl.innerText = `${dateParts[1]}月${dateParts[2]}日 收支紀錄 (點擊可修改)`;
@@ -1220,10 +1260,11 @@
                     <div class="rec-bot">
                         ${isInc ? `<span>${rec.depositType || '儲值金'}餘額: ${formatDepositDisplay(rec.deposit, rec.depositType)}</span>` : ''}
                         ${rec.note ? `<span style="margin-left:10px;">📝 ${escapeHtml(rec.note)}</span>` : ''}
-                    </div>`;
+                    `;
                 listContainer.appendChild(li);
             });
         }
+
         window.addRecord = async function() {
             const type = document.getElementById('add-type').value;
             const custName = type === '收入' ? document.getElementById('add-cust-name').value.trim() : '';
@@ -1246,6 +1287,7 @@
             document.getElementById('add-amount').value = ''; document.getElementById('add-deposit').value = ''; document.getElementById('add-note').value = '';
             initCalendar(); renderDayRecords(); renderReports(); renderCustomerPage();
         }
+
         window.deleteRecord = async function(id, pageSource, event) {
             if(event) event.stopPropagation();
             if(confirm('❌確定要刪除這筆紀錄嗎？')) {
@@ -1255,6 +1297,7 @@
                 if (pageSource === 'all') renderAllRecords();
             }
         }
+
         window.renderAllRecords = function() {
             const container = document.getElementById('all-records-container'); if(!container) return;
             const searchKey = document.getElementById('search-input').value.toLowerCase().trim(); container.innerHTML = '';
@@ -1279,6 +1322,7 @@
                 currentGroupDiv.appendChild(item);
             });
         }
+
         window.renderReports = function() {
             const yearSel = document.getElementById('report-year-select'); const monthSel = document.getElementById('report-month-select');
             if(!yearSel || !monthSel) return;
@@ -1292,7 +1336,7 @@
             document.getElementById('rep-total-expense').innerText = `$${exp.toLocaleString()}`;
             let net = inc - exp; let netEl = document.getElementById('rep-net-profit');
             if(netEl) { netEl.innerText = `$${net.toLocaleString()}`; netEl.style.color = net >= 0 ? 'var(--income-green)' : 'var(--expense-red)'; }
-            // 項目排行
+            
             let rankingContainer = document.getElementById('income-ranking-container');
             if(rankingContainer) {
                 rankingContainer.innerHTML = '';
@@ -1310,15 +1354,18 @@
             }
             if (currentReportDetailFilter) renderReportDetailList(filtered, currentReportDetailFilter);
         }
+
         window.toggleReportDetailFilter = function(type) {
             if (currentReportDetailFilter === type) { closeReportDetail(); return; }
             currentReportDetailFilter = type; document.getElementById('report-detail-box-container').style.display = 'block';
             document.getElementById('report-detail-type-label').innerText = `📊 區間【${type}】項目合計統整`;
             renderReports();
         }
+
         window.closeReportDetail = function() {
             currentReportDetailFilter = ''; let el = document.getElementById('report-detail-box-container'); if(el) el.style.display = 'none';
         }
+
         function renderReportDetailList(scopedRecords, type) {
             const listWrapper = document.getElementById('report-detail-list-wrapper'); if(!listWrapper) return; listWrapper.innerHTML = '';
             const targets = scopedRecords.filter(r => r.type === type);
@@ -1330,6 +1377,7 @@
                 listWrapper.appendChild(row);
             });
         }
+
         window.renderCustomerPage = function() {
             const thisMonth = new Date().getMonth() + 1;
             let mTitleEl = document.getElementById('current-month-title'); if(mTitleEl) mTitleEl.innerText = thisMonth;
@@ -1355,7 +1403,7 @@
                 if (!customerMap[name]) customerMap[name] = { name: name, phone: customerCRM[name].phone||'', birthday: customerCRM[name].birthday||'', note: customerCRM[name].note||'', visitCount: 0, totalSpent: 0, latestDepositLabel: '儲值餘額', latestDepositValue: '未記錄', history: [] };
             });
             let customers = Object.values(customerMap);
-            // 壽星提醒
+            
             let birthdayContainer = document.getElementById('birthday-list-container');
             if(birthdayContainer) {
                 birthdayContainer.innerHTML = ''; let bCount = 0;
@@ -1401,11 +1449,13 @@
                 container.appendChild(card);
             });
         }
+
         window.toggleCard = function(cardElement) {
             let isOpen = cardElement.classList.contains('open');
             document.querySelectorAll('.customer-card').forEach(c => c.classList.remove('open'));
             if (!isOpen) cardElement.classList.add('open');
         }
+
         window.saveCRMData = async function(oldName) {
             const newName = document.getElementById(`edit-name-${oldName}`).value.trim();
             const phoneVal = document.getElementById(`edit-phone-${oldName}`).value.trim();
@@ -1424,145 +1474,51 @@
             await saveCloudData();
             alert(`資料已成功同步更新！`); renderCustomerPage();
         }
+
         window.deleteCustomerData = async function(name) {
             if (confirm(`確定要刪除客戶「${name}」的基礎資料嗎？`)) {
                 if (customerCRM[name]) delete customerCRM[name];
                 await saveCloudData(); renderCustomerPage();
             }
         }
-    </script>
 
-    <!-- ==================== 報價分頁邏輯 ==================== -->
-    <script>
-    (function(){
-    var KEY='mumu_quote_v1';
-    var $=function(i){return document.getElementById(i)};
-    var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
-    var money=function(n){return '$'+Math.round(n).toLocaleString('en-US')};
-    var DEF=[
-     {name:'款式',mode:'single',items:[{n:'單根自然',p:1200},{n:'3D 輕盈',p:1500},{n:'6D 濃密',p:1800},{n:'漫畫睫',p:1600}]},
-     {name:'補睫',mode:'single',items:[{n:'兩週內',p:800},{n:'三週內',p:1100},{n:'四週以上',p:1400}]},
-     {name:'卸除',mode:'single',items:[{n:'不需卸除',p:0},{n:'卸除自家',p:200},{n:'卸除他店',p:300}]},
-     {name:'加購',mode:'multi',items:[{n:'下睫毛',p:400},{n:'彩色睫毛',p:200},{n:'睫毛護理',p:300},{n:'閃鑽點綴',p:100}]}
-    ];
-    var cards;
-    try{var s=JSON.parse(localStorage.getItem(KEY)||'null');cards=Array.isArray(s)&&s.length?s:DEF;}catch(e){cards=DEF;}
-    var sel={},o={fee:false,mode:'cash',dis:0,dep:0},draft=[];
+        // 💡 報價單計算與 Line 預約傳送邏輯
+        window.calculateQuoteTotal = function() {
+            const styleRadios = document.querySelectorAll('input[name="quote-style"]');
+            const addonCheckboxes = document.querySelectorAll('input[name="quote-addon"]');
+            const totalAmountElement = document.getElementById('quoteTotalAmount');
+            const lineBookingBtn = document.getElementById('lineBookingBtn');
 
-    function render(){
-      $('q-cards').innerHTML=cards.map(function(c,ci){
-        return '<div class="card-box"><div class="card-title"><span>'+esc(c.name)+'</span><span style="font-size:12px;font-weight:normal;color:var(--text-muted)">'+(c.mode==='multi'?'可複選':'單選')+'</span></div><div class="q-opts">'+
-        c.items.map(function(it,ii){var on=(sel[ci]||[]).indexOf(ii)>-1;
-          return '<button class="q-opt'+(on?' on':'')+'" data-c="'+ci+'" data-i="'+ii+'"><b>'+esc(it.n)+'</b><i>'+money(it.p)+'</i></button>';}).join('')+'</div></div>';
-      }).join('');
-      $('q-bal').textContent=money(calc().bal);
-    }
-    function calc(){
-      var lines=[],sub=0;
-      cards.forEach(function(c,ci){(sel[ci]||[]).forEach(function(ii){var it=c.items[ii];if(it){lines.push({g:c.name,n:it.n,p:it.p});sub+=it.p;}});});
-      var fee=o.fee?Math.round(sub*0.1):0;
-      var dis=o.mode==='cash'?o.dis:Math.round(sub*o.dis/100);
-      var total=Math.max(0,sub+fee-dis);
-      return{lines:lines,sub:sub,fee:fee,dis:dis,total:total,dep:o.dep,bal:Math.max(0,total-o.dep)};
-    }
-    function text(){
-      var r=calc(),t='MUMU STUDIO 美睫報價\n';
-      r.lines.forEach(function(l){t+=l.g+'：'+l.n+' '+money(l.p)+'\n';});
-      t+='小計 '+money(r.sub)+'\n';
-      if(r.fee)t+='服務費 10% '+money(r.fee)+'\n';
-      if(r.dis)t+='優惠折抵 -'+money(r.dis)+'\n';
-      t+='總金額 '+money(r.total)+'\n';
-      if(r.dep)t+='預收定金 -'+money(r.dep)+'\n';
-      return t+'應付尾款 '+money(r.bal);
-    }
-    function copy(){
-      var t=text();
-      function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');alert('已複製');}catch(e){alert('複製失敗，請手動選取');}a.remove();}
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){alert('已複製')},fb);}else fb();
-    }
-    function quote(){
-      var r=calc(),h='';
-      if(!r.lines.length)h='<div class="no-data">尚未選擇任何項目</div>';
-      r.lines.forEach(function(l){h+='<div class="q-line"><span>'+esc(l.n)+' <small style="color:var(--text-muted)">'+esc(l.g)+'</small></span><span>'+money(l.p)+'</span></div>';});
-      h+='<div class="q-line" style="border-top:1px dashed var(--accent-latte);margin-top:6px"><span>小計</span><span>'+money(r.sub)+'</span></div>';
-      if(r.fee)h+='<div class="q-line"><span>服務費 10%</span><span>'+money(r.fee)+'</span></div>';
-      if(r.dis)h+='<div class="q-line"><span>優惠折抵</span><span>-'+money(r.dis)+'</span></div>';
-      h+='<div class="q-line"><span>總金額</span><span>'+money(r.total)+'</span></div>';
-      if(r.dep)h+='<div class="q-line"><span>預收定金</span><span>-'+money(r.dep)+'</span></div>';
-      h+='<div class="q-line" style="font-weight:700;font-size:16px;border-top:1px solid var(--accent-latte);margin-top:6px;padding-top:10px"><span>應付尾款</span><span style="color:var(--highlight-orange)">'+money(r.bal)+'</span></div>';
-      $('q-body').innerHTML=h;$('q-modal').style.display='flex';
-    }
+            let total = 0;
+            let selectedStyleName = "";
+            let selectedAddons = [];
 
-    $('q-cards').addEventListener('click',function(e){
-      var b=e.target.closest('.q-opt');if(!b)return;
-      var ci=+b.dataset.c,ii=+b.dataset.i,cur=sel[ci]||[],k=cur.indexOf(ii);
-      if(cards[ci].mode==='multi'){if(k>-1)cur.splice(k,1);else cur.push(ii);}
-      else cur=k>-1?[]:[ii];
-      sel[ci]=cur;render();
-    });
-    $('q-dep').addEventListener('input',function(){o.dep=Math.max(0,+this.value||0);render();});
-    $('q-dis').addEventListener('input',function(){o.dis=Math.max(0,+this.value||0);render();});
-    $('q-fee').addEventListener('click',function(){o.fee=!o.fee;this.classList.toggle('on',o.fee);render();});
-    function setMode(m){
-      o.mode=m;$('q-cash').classList.toggle('on',m==='cash');$('q-pct').classList.toggle('on',m==='pct');
-      $('q-note').textContent=m==='cash'?'目前為折抵現金':'目前為折扣百分比（例如 10 = 減 10%）';render();
-    }
-    $('q-cash').addEventListener('click',function(){setMode('cash')});
-    $('q-pct').addEventListener('click',function(){setMode('pct')});
-    $('q-reset').addEventListener('click',function(){
-      sel={};o.fee=false;o.dis=0;o.dep=0;$('q-dep').value='';$('q-dis').value='';$('q-fee').classList.remove('on');setMode('cash');
-    });
-    $('q-copy').addEventListener('click',copy);$('q-copy2').addEventListener('click',copy);
-    $('q-view').addEventListener('click',quote);
-    function closeQ(){$('q-modal').style.display='none'}
-    $('q-close').addEventListener('click',closeQ);$('q-close2').addEventListener('click',closeQ);
-    $('q-modal').addEventListener('click',function(e){if(e.target===this)closeQ()});
+            styleRadios.forEach(radio => {
+                if (radio.checked) {
+                    total += parseInt(radio.value);
+                    selectedStyleName = radio.getAttribute('data-name');
+                }
+            });
 
-    /* 雲端同步初始化（登入後由主程式呼叫） */
-    window.quoteInit=function(cloud){
-      if(Array.isArray(cloud)&&cloud.length){
-        cards=cloud;try{localStorage.setItem(KEY,JSON.stringify(cards));}catch(e){}
-      }else if(localStorage.getItem(KEY)&&window.saveQuoteCards){
-        window.saveQuoteCards(cards); /* 雲端沒有但本機有：搬上雲端 */
-      }
-      sel={};render();
-    };
-    /* 轉入記帳：預填月曆的收入表單（不會自動送出） */
-    $('q-post').addEventListener('click',function(){
-      var r=calc();
-      if(!r.lines.length)return alert('請先選擇報價項目');
-      var note=r.lines.map(function(l){return l.n}).join('、');
-      if(r.dep)note+='｜定金 '+money(r.dep);
-      if(window.fillRecordForm)window.fillRecordForm({project:'美睫',amount:r.total,note:note});
-    });
+            addonCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    total += parseInt(checkbox.value);
+                    selectedAddons.push(checkbox.getAttribute('data-name'));
+                }
+            });
 
-    /* 編輯價目 */
-    function adminRender(){
-      $('q-admin-body').innerHTML=draft.map(function(c){
-        return '<div class="edit-crm-group"><div style="display:flex;gap:6px;margin-bottom:6px"><input class="input-style qa-name" style="background:#fff" value="'+esc(c.name)+'" placeholder="小卡名稱"><select class="input-style qa-mode" style="background:#fff;width:90px"><option value="single"'+(c.mode==='single'?' selected':'')+'>單選</option><option value="multi"'+(c.mode==='multi'?' selected':'')+'>複選</option></select></div><textarea class="input-style qa-items" style="background:#fff" rows="4" placeholder="名稱,價格">'+esc(c.items.map(function(x){return x.n+','+x.p}).join('\n'))+'</textarea></div>';
-      }).join('');
-    }
-    function collect(){
-      return [].map.call($('q-admin-body').querySelectorAll('.edit-crm-group'),function(g){
-        var items=g.querySelector('.qa-items').value.split('\n').map(function(l){
-          l=l.trim();if(!l)return null;var m=l.match(/^(.*?)[,，\s]+(\d+)\s*$/);
-          return m?{n:m[1].trim(),p:+m[2]}:{n:l,p:0};
-        }).filter(function(x){return x&&x.n});
-        return{name:g.querySelector('.qa-name').value.trim(),mode:g.querySelector('.qa-mode').value,items:items};
-      });
-    }
-    $('q-edit').addEventListener('click',function(){draft=JSON.parse(JSON.stringify(cards));adminRender();$('q-admin').style.display='flex';});
-    $('q-addcard').addEventListener('click',function(){draft=collect();draft.push({name:'新小卡',mode:'single',items:[]});adminRender();});
-    $('q-acancel').addEventListener('click',function(){$('q-admin').style.display='none'});
-    $('q-asave').addEventListener('click',function(){
-      var d=collect().filter(function(c){return c.name});
-      if(!d.length)return alert('至少需要一張小卡');
-      cards=d;try{localStorage.setItem(KEY,JSON.stringify(cards));}catch(e){}
-      if(window.saveQuoteCards)window.saveQuoteCards(cards);
-      sel={};$('q-admin').style.display='none';render();
-    });
-    render();
-    })();
+            if(totalAmountElement) totalAmountElement.textContent = `$${total}`;
+
+            let message = `您好，我想預約美睫：\n- 款式：${selectedStyleName}`;
+            if (selectedAddons.length > 0) {
+                message += `\n- 附加服務：${selectedAddons.join(', ')}`;
+            }
+            message += `\n- 預估總計：$${total} 元`;
+            
+            if(lineBookingBtn) {
+                lineBookingBtn.href = `https://line.me/R/msg/text/?${encodeURIComponent(message)}`;
+            }
+        }
     </script>
 </body>
 </html>
